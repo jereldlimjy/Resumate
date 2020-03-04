@@ -11,7 +11,6 @@ from helpers import login_required, apology
 
 # Configure application
 app = Flask(__name__)
-app.secret_key = 'wasdjsaidjsidjsdj'
 
 # Create directory to save uploads
 
