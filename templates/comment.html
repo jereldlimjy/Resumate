@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Comment
+{% endblock %}
+
+{% block main %}
+    {% for row in rows %}
+    <div class="card bg-light mb-3 mx-auto" style="max-width: 35rem;">
+        <div class="card-header text-left text-secondary">
+            <p><b>{{"@" + row["username"]}}</b> <i class="fa fa-github-alt" aria-hidden="true"></i></p>
+        </div>
+        <div class="card-body">
+            <div class="card-text text-left">
+                <p>{{ row["post"] }}</p>
+                {% if row["filename"] == None %}
+                    {{ continue }}
+                {% else %}
+                    <img src="/static/{{ row["filename"] }}" class="img-fluid img-rounded mb-2">
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            {{ row["date"] + " (UTC)" }}
+        </div>
+    </div>
+    <form action="/comment" method="post">
+        <input type="hidden" name="post_id" value="{{ row["post_id"] }}">
+        <div class="input-group mb-3 mx-auto w-50">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-primary" type="submit">Comment</button>
+            </div>
+            <textarea name="comment" class="form-control rounded" required></textarea>
+        </div>
+    </form>
+    {% endfor %}
+
+    <div class="card text-left mx-auto" style="width: 32.6rem;">
+        <div class="card-header">
+            <i class="fa fa-commenting-o"></i>
+            Recent Comments
+        </div>
+        <div class="card-body">
+    {% for comment in comments %}
+            <p class="card-text"><b>@{{ comment["username"] }}</b>: {{ comment["comment"] }}</p>
+    {% endfor %}
+           </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Homepage
+{% endblock %}
+
+{% block main %}
+
+    <form action="/post" method="post" enctype="multipart/form-data">
+        <div class="input-group mb-2 mx-auto w-50">
+            <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">Create Post</button>
+            </div>
+            <textarea name="post" class="form-control rounded" rows=3 required></textarea>
+        </div>
+        <div class="input-group mb-4 mx-auto w-50">
+            <div class="custom-file">
+                <input name="file" type="file" class="custom-file-input">
+                <label class="custom-file-label">Choose file</label>
+            </div>
+        </div>
+    </form>
+
+    {% for row in rows %}
+    <div class="card bg-light mb-3 mx-auto" style="max-width: 35rem;">
+        <div class="card-header text-left text-secondary">
+            <p><b>{{"@" + row["username"] }}</b> <i class="fa fa-github-alt" aria-hidden="true"></i></p>
+        </div>
+        <div class="card-body">
+            <form action="/comment" method="get">
+            <div class="card-text text-left">
+                <p>{{ row["post"] }}</p>
+                {% if row["filename"] == None %}
+                    {{ continue }}
+                {% else %}
+                    <img src="/static/{{ row["filename"] }}" class="img-fluid img-rounded mb-2">
+                {% endif %}
+                <input type="hidden" name="post_id" value="{{ row["post_id"] }}">
+                <button type="submit" class="btn btn-primary btn-sm active" style="float: right;">Comment</button>
+            </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            {{ row["date"] + " (UTC)"}}
+        </div>
+    </div>
+    {% endfor %}
+
+    <script>
+
+        $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+
+    </script>
+
+{% endblock %}

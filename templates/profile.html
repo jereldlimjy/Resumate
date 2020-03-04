@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Uploads
+{% endblock %}
+
+{% block main %}
+    {% for row in rows %}
+    <div class="card bg-light mb-3 mx-auto" style="max-width: 35rem;">
+        <div class="card-header text-left text-secondary">
+            <p><b>{{"@" + row["username"]}}</b> <i class="fa fa-github-alt" aria-hidden="true"></i></p>
+        </div>
+        <div class="card-body">
+            <div class="card-text text-left">
+                <p>{{ row["post"] }}</p>
+                {% if row["filename"] == None %}
+                    {{ continue }}
+                {% else %}
+                    <img src="/static/{{ row["filename"] }}" class="img-fluid img-rounded mb-2">
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            {{ row["date"] + " (UTC)" }}
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
